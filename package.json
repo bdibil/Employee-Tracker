@@ -1,0 +1,27 @@
+{
+  "name": "employee-tracker",
+  "version": "1.0.0",
+  "description": "This project is a command-line application that uses Node.js, Inquirer, and MySQL, to manage a company's employee database. - It was built to practice using Node.js and MySQL integration.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bdibil/Employee-Tracker.git"
+  },
+  "keywords": [],
+  "author": "Bernardo Dibildox",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bdibil/Employee-Tracker/issues"
+  },
+  "homepage": "https://github.com/bdibil/Employee-Tracker#readme",
+  "dependencies": {
+    "inquirer": "^8.2.0",
+    "dotenv": "^15.0.0",
+    "express": "^4.17.2",
+    "mysql2": "^2.3.3"
+  }
+}
