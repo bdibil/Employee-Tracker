@@ -25,8 +25,9 @@ To use this application:
 2. Respond to the command-line application 
 
 
-A walkthrough video is included below: 
-[Employee Tracker - Walkthrough](url)
+A walkthrough video is `NOT YET included` below: 
+
+###### [Employee Tracker - Walkthrough](url)
 
 
 ## License  
