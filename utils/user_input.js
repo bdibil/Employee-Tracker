@@ -6,7 +6,7 @@ const db = require('./connection');
 const { query } = require('./connection');
 
 
-testEmp = new Employee(99, 'Ber', 'Dib', 1, 'Engineer', 0, 1, 'Don')
+// testEmp = new Employee(99, 'Ber', 'Dib', 1, 'Engineer', 0, 1, 'Don')
 
 
 // Constructor function for questions
@@ -18,7 +18,7 @@ function Question(type, message, name, choices) {
 }
 
 // Constructor function for Post
-function Post(type, fName, lName, roleId, manId, salary, depId) {
+function Post(type, fName, lName, roleId, manId, salary, depId, empId) {
     this.type = type;
     this.fName = fName;
     this.lName = lName;
@@ -26,6 +26,7 @@ function Post(type, fName, lName, roleId, manId, salary, depId) {
     this.manId = manId;
     this.salary = salary;
     this.depId = depId;
+    this.empId = empId;
 }
 
 
@@ -38,7 +39,9 @@ const q1 = new Question('list', 'What would you like to do?', 'choice', userChoi
 const depName = new Question('input', 'Departemnt Name: ', 'depName')
 
 const roleQs = ['Role Name: ', 'Salary: ', 'Department ID: ']
-const employeeQs = ['First Name: ', 'Last Name: ', 'Role: ', 'Manager: ']
+const employeeQs = ['First Name: ', 'Last Name: ', 'Role ID: ', 'Manager ID: ']
+
+const updateQ = ['Employee ID: ', 'NEW Role ID: ']
 
 
 const roleName = new Question('input', roleQs[0], 'roleName')
@@ -46,11 +49,14 @@ const roleSalary = new Question('input', roleQs[1], 'roleSalary')
 const roleDept = new Question('input', roleQs[2], 'roleDept')
 
 
-const empName = new Question('input', roleQs[0], 'empName')
-const empLname = new Question('input', roleQs[1], 'empLname')
-const empRole = new Question('input', roleQs[2], 'empRole')
-const empMan = new Question('input', roleQs[3], 'empMan')
+const empName = new Question('input', employeeQs[0], 'empName')
+const empLname = new Question('input', employeeQs[1], 'empLname')
+const empRole = new Question('input', employeeQs[2], 'empRole')
+const empMan = new Question('input', employeeQs[3], 'empMan')
 
+
+const putEmpId = new Question('input', updateQ[0], 'putEmpId')
+const putEmpRole = new Question('input', updateQ[1], 'putEmpRole')
 
 
 
@@ -77,7 +83,7 @@ function postResult(post) {
     switch (post.type) {
         case 'dept':
             query = 'INSERT INTO departments (dep_name) VALUES (?)'
-            params = post.fName;
+            params = post.fName
             updateDb(query, params)
             break;
         case 'role':
@@ -86,14 +92,16 @@ function postResult(post) {
             updateDb(query, params)
             break;
         case 'newEmp':
-
-
-
+            query = 'INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)'
+            params = [post.fName, post.lName, post.roleId, post.manId]
+            updateDb(query, params)
             break;
+
         case 'putEmp':
 
-
-
+            query = `UPDATE employees SET role_id = ${post.roleId} WHERE (id = ${post.empId})`
+            // params = [post.roleId, post.empId]
+            updateDb(query)
             break;
 
         default:
@@ -129,9 +137,23 @@ const askInfo = async () => {
 
                 break;
             case 'Add Employee':
-
+                
+                let ansE = await inquirer.prompt([empName, empLname, empRole, empMan])
+                post.type = 'newEmp'
+                post.fName = ansE.empName
+                post.lName = ansE.empLname
+                post.roleId = ansE.empRole
+                post.manId = ansE.empMan
+                postResult(post)
+                
                 break;
             case 'Update Employee Role':
+
+                let ansU = await inquirer.prompt([putEmpId, putEmpRole])
+                post.type = 'putEmp'
+                post.empId = ansU.putEmpId
+                post.roleId = ansU.putEmpRole
+                postResult(post)
 
                 break;
 
